@@ -1,0 +1,159 @@
+# EcoCollect - Angular 20 Project
+
+مشروع EcoCollect - منصة ذكية لجمع وإعادة تدوير النفايات
+
+## ✅ تم تحويل المشروع بالكامل من React إلى Angular 20
+
+### الميزات الرئيسية:
+- ✅ **Angular 20** - أحدث إصدار من Angular
+- ✅ **Standalone Components** - مكونات مستقلة
+- ✅ **Angular Signals** - لإدارة الحالة
+- ✅ **Tailwind CSS** - للتصميم
+- ✅ **Reactive Forms** - للنماذج
+- ✅ **Lazy Loading** - تحميل الصفحات عند الحاجة
+
+### المكونات والخدمات:
+
+#### Services:
+- `ThemeService` - إدارة الوضع الفاتح/الداكن
+- `LanguageService` - إدارة اللغة (عربي/إنجليزي) مع RTL/LTR
+- `UserService` - إدارة المستخدم والأدوار
+- `NotificationService` - إدارة الإشعارات
+
+#### UI Components:
+- `ButtonComponent` - مكون الزر
+- `CardComponent` - مكونات البطاقة
+- `BadgeComponent` - مكون الشارة
+- `TabsComponent` - مكونات التبويبات
+
+#### الصفحات:
+- ✅ Landing Page - صفحة الهبوط
+- ✅ Login - تسجيل الدخول
+- ✅ Register - التسجيل
+- ✅ Role Selection - اختيار الدور
+- ✅ Citizen Dashboard - لوحة تحكم المواطن
+- ✅ Collector Dashboard - لوحة تحكم الجامع
+- ✅ Admin Dashboard - لوحة تحكم المدير
+- ✅ My Requests - صفحة الطلبات مع التبويبات
+- ✅ Profile - صفحة الملف الشخصي
+- ✅ Notifications - صفحة الإشعارات
+- ✅ Rewards - صفحة المكافآت
+- ✅ Settings - صفحة الإعدادات
+- ✅ 404 - صفحة غير موجود
+
+## 🚀 التشغيل:
+
+### 1. تثبيت الحزم:
+```bash
+npm install
+```
+
+### 2. تشغيل المشروع:
+```bash
+npm start
+```
+أو
+```bash
+ng serve --port 8080
+```
+
+### 3. فتح المتصفح:
+افتح المتصفح على العنوان: **http://localhost:8080**
+
+## 📦 الحزم المستخدمة:
+
+### Dependencies:
+- `@angular/*` - Angular 20
+- `rxjs` - Reactive Extensions
+- `tailwindcss` - CSS Framework
+- `clsx` - Utility for className
+- `date-fns` - Date utilities
+- `recharts` - Charts library
+
+### DevDependencies:
+- `@angular/cli` - Angular CLI
+- `typescript` - TypeScript
+- `tailwindcss` - Tailwind CSS
+- `autoprefixer` - CSS autoprefixer
+- `postcss` - CSS processor
+
+## 🎨 الميزات:
+
+### 1. دعم متعدد اللغات:
+- العربية (RTL)
+- الإنجليزية (LTR)
+- تبديل سلس بين اللغات
+
+### 2. الوضع الفاتح/الداكن:
+- دعم كامل للوضع الفاتح والداكن
+- حفظ التفضيلات في localStorage
+
+### 3. إدارة المستخدمين:
+- نظام أدوار متعدد (Citizen, Collector, Admin)
+- إمكانية إضافة أدوار متعددة
+- تبديل بين الأدوار
+
+### 4. الإشعارات:
+- نظام إشعارات كامل
+- عداد الإشعارات غير المقروءة
+- إشعارات في الوقت الفعلي
+
+## 📁 هيكل المشروع:
+
+```
+src/
+├── app/
+│   ├── components/          # المكونات المشتركة
+│   │   ├── navbar/
+│   │   └── create-collection-modal/
+│   ├── pages/               # الصفحات
+│   │   ├── landing/
+│   │   ├── login/
+│   │   ├── register/
+│   │   └── ...
+│   ├── services/            # الخدمات
+│   │   ├── theme.service.ts
+│   │   ├── language.service.ts
+│   │   ├── user.service.ts
+│   │   └── notification.service.ts
+│   ├── shared/              # المكونات المشتركة
+│   │   └── ui/              # UI Components
+│   ├── app.component.ts
+│   └── app.routes.ts
+├── styles.css
+├── index.html
+└── main.ts
+```
+
+## 🔧 التكوينات:
+
+- `angular.json` - تكوين Angular
+- `tsconfig.json` - تكوين TypeScript
+- `tailwind.config.ts` - تكوين Tailwind CSS
+- `package.json` - الحزم والتبعيات
+
+## ✅ تم إصلاح جميع الأخطاء:
+
+- ✅ إصلاح مشاكل CSS في Badge Component
+- ✅ إزالة الاستيرادات غير المستخدمة
+- ✅ إصلاح مشاكل البناء
+- ✅ تحسين الأداء
+
+## 📝 ملاحظات:
+
+- المشروع يستخدم Angular 20 مع أحدث الميزات
+- جميع المكونات standalone
+- استخدام Angular Signals للـ state management
+- التصميم متجاوب ويعمل على جميع الأجهزة
+
+## 🎯 الخطوات التالية (اختيارية):
+
+- إضافة اختبارات (Unit Tests)
+- إضافة E2E Tests
+- تحسين الأداء
+- إضافة PWA Support
+- إضافة Service Worker
+
+---
+
+**تم التحويل بنجاح من React إلى Angular 20! 🎉**

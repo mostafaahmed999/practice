@@ -1,0 +1,123 @@
+<div class="min-h-screen py-8 px-4 md:px-6 lg:px-8 pb-24 md:pb-8">
+  <div class="max-w-7xl mx-auto space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-bold text-foreground">{{ t('rewards') }}</h1>
+        <p class="text-muted-foreground mt-2">Redeem your points for exciting rewards</p>
+      </div>
+    </div>
+
+    <!-- Points Summary -->
+    <div class="grid md:grid-cols-3 gap-6">
+      <app-card class="shadow-md">
+        <app-card-content class="p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">{{ t('totalPoints') }}</p>
+              <p class="text-4xl font-bold text-primary">{{ currentUser()?.points || 0 }}</p>
+            </div>
+            <span class="text-5xl">🎁</span>
+          </div>
+        </app-card-content>
+      </app-card>
+
+      <app-card class="shadow-md">
+        <app-card-content class="p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">This Month</p>
+              <p class="text-4xl font-bold text-accent">+{{ monthlyPoints() }}</p>
+            </div>
+            <span class="text-5xl">📈</span>
+          </div>
+        </app-card-content>
+      </app-card>
+
+      <app-card class="shadow-md">
+        <app-card-content class="p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">Level</p>
+              <p class="text-4xl font-bold text-primary capitalize">{{ currentUser()?.level || 'Bronze' }}</p>
+            </div>
+            <span class="text-5xl">⭐</span>
+          </div>
+        </app-card-content>
+      </app-card>
+    </div>
+
+    <!-- Badges Section -->
+    <app-card class="shadow-md">
+      <app-card-header>
+        <app-card-title class="text-2xl">🏆 Your Badges</app-card-title>
+        <app-card-description>Earn badges by completing recycling goals</app-card-description>
+      </app-card-header>
+      <app-card-content>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <app-badge-display
+            *ngFor="let badge of badges()"
+            [badge]="badge"
+          ></app-badge-display>
+        </div>
+      </app-card-content>
+    </app-card>
+
+    <!-- Rewards Grid -->
+    <div>
+      <h2 class="text-2xl font-bold mb-4">{{ t('redeemRewards') }}</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <app-card
+          *ngFor="let reward of rewards()"
+          [class]="'shadow-md hover:shadow-lg transition-all ' + (!reward.available ? 'opacity-60' : '')"
+        >
+          <app-card-content class="p-6">
+            <div class="text-5xl mb-4 text-center">{{ reward.icon }}</div>
+            <h3 class="text-xl font-bold mb-2 text-center">{{ reward.title }}</h3>
+            <p class="text-sm text-muted-foreground mb-4 text-center">{{ reward.description }}</p>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl font-bold text-primary">{{ reward.points }}</span>
+                <span class="text-sm text-muted-foreground">points</span>
+              </div>
+              <app-badge [variant]="reward.category === 'popular' ? 'default' : 'secondary'">
+                {{ reward.category }}
+              </app-badge>
+            </div>
+            <app-button
+              [disabled]="!reward.available || (currentUser()?.points || 0) < reward.points"
+              [variant]="reward.available && (currentUser()?.points || 0) >= reward.points ? 'default' : 'outline'"
+              class="w-full mt-4"
+              (onClick)="redeemReward(reward.id)"
+            >
+              {{ reward.available && (currentUser()?.points || 0) >= reward.points ? 'Redeem Now' : 'Not Available' }}
+            </app-button>
+          </app-card-content>
+        </app-card>
+      </div>
+    </div>
+
+    <!-- Point History -->
+    <app-card class="shadow-md">
+      <app-card-header>
+        <app-card-title class="text-2xl">{{ t('pointHistory') }}</app-card-title>
+        <app-card-description>Track your point earnings and redemptions</app-card-description>
+      </app-card-header>
+      <app-card-content>
+        <div class="space-y-3">
+          <app-point-history-item
+            *ngFor="let history of pointHistory()"
+            [history]="history"
+          ></app-point-history-item>
+          @if (pointHistory().length === 0) {
+            <div class="text-center py-8 text-muted-foreground">
+              <span class="text-4xl block mb-2">📊</span>
+              <p>No point history yet</p>
+            </div>
+          }
+        </div>
+      </app-card-content>
+    </app-card>
+  </div>
+</div>
+
