@@ -1,15 +1,14 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LanguageService } from '../../core/services/language.service';
-import { DataService } from '../../core/services/data.service';
-import { UserService } from '../../core/services/user.service';
-import { CollectionRequest, RequestStatus } from '../../core/models/collection-request.model';
-import { ButtonComponent } from '../../shared/ui/button/button.component';
-import { RequestCardComponent } from '../../shared/ui/request-card/request-card.component';
-import { CardComponent, CardHeaderComponent, CardTitleComponent, CardDescriptionComponent, CardContentComponent } from '../../shared/ui/card/card.component';
-import { BadgeComponent } from '../../shared/ui/badge/badge.component';
-import { CreateCollectionModalComponent } from '../../components/create-collection-modal/create-collection-modal.component';
-import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '../../shared/ui/tabs/tabs.component';
+import { LanguageService } from '../../../core/services/language.service';
+import { DataService } from '../../../core/services/data.service';
+import { UserService } from '../../../core/services/user.service';
+import { CollectionRequest, RequestStatus } from '../../../core/models/collection-request.model';
+import { ButtonComponent } from '../../../shared/ui/button/button.component';
+import { RequestCardComponent } from '../../../shared/ui/request-card/request-card.component';
+import { CardComponent, CardContentComponent } from '../../../shared/ui/card/card.component';
+import { CreateCollectionModalComponent } from '../../../shared/components/create-collection-modal/create-collection-modal.component';
+import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '../../../shared/ui/tabs/tabs.component';
 
 @Component({
   selector: 'app-my-requests',
@@ -85,12 +84,13 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
           </app-tabs-list>
 
           <app-tabs-content [value]="'all'" [isActive]="selectedTab() === 'all'" class="space-y-4">
+            @for (request of filteredRequests(); track request.id) {
             <app-request-card
-              *ngFor="let request of filteredRequests()"
               [request]="request"
               [clickable]="false"
               [showActions]="false"
             ></app-request-card>
+            }
             @if (filteredRequests().length === 0) {
               <app-card>
                 <app-card-content class="p-8 text-center">
@@ -102,12 +102,13 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
           </app-tabs-content>
 
           <app-tabs-content [value]="'pending'" [isActive]="selectedTab() === 'pending'" class="space-y-4">
+            @for (request of getRequestsByStatus('pending'); track request.id) {
             <app-request-card
-              *ngFor="let request of getRequestsByStatus('pending')"
               [request]="request"
               [clickable]="false"
               [showActions]="false"
             ></app-request-card>
+            }
             @if (getRequestsByStatus('pending').length === 0) {
               <app-card>
                 <app-card-content class="p-8 text-center">
@@ -119,12 +120,13 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
           </app-tabs-content>
 
           <app-tabs-content [value]="'in-progress'" [isActive]="selectedTab() === 'in-progress'" class="space-y-4">
+            @for (request of getRequestsByStatus('in-progress'); track request.id) {
             <app-request-card
-              *ngFor="let request of getRequestsByStatus('in-progress')"
               [request]="request"
               [clickable]="false"
               [showActions]="false"
             ></app-request-card>
+            }
             @if (getRequestsByStatus('in-progress').length === 0) {
               <app-card>
                 <app-card-content class="p-8 text-center">
@@ -136,12 +138,13 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
           </app-tabs-content>
 
           <app-tabs-content [value]="'completed'" [isActive]="selectedTab() === 'completed'" class="space-y-4">
+            @for (request of getRequestsByStatus('completed'); track request.id) {
             <app-request-card
-              *ngFor="let request of getRequestsByStatus('completed')"
               [request]="request"
               [clickable]="false"
               [showActions]="false"
             ></app-request-card>
+            }
             @if (getRequestsByStatus('completed').length === 0) {
               <app-card>
                 <app-card-content class="p-8 text-center">
@@ -153,12 +156,13 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
           </app-tabs-content>
 
           <app-tabs-content [value]="'cancelled'" [isActive]="selectedTab() === 'cancelled'" class="space-y-4">
+            @for (request of getRequestsByStatus('cancelled'); track request.id) {
             <app-request-card
-              *ngFor="let request of getRequestsByStatus('cancelled')"
               [request]="request"
               [clickable]="false"
               [showActions]="false"
             ></app-request-card>
+            }
             @if (getRequestsByStatus('cancelled').length === 0) {
               <app-card>
                 <app-card-content class="p-8 text-center">

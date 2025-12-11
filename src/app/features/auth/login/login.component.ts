@@ -1,84 +1,219 @@
-import { Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  ChangeDetectorRef,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { LanguageService } from '../../core/services/language.service';
-import { UserService } from '../../core/services/user.service';
-import { ButtonComponent } from '../../shared/ui/button/button.component';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil, debounceTime } from 'rxjs/operators';
+
+import { AuthService } from '../../../core/services/auth.service';
+import { FlashMessageService } from '../../../core/services/flash-message.service';
+import { AuthValidators } from '../../../core/utils/validators.util';
+
+/**
+ * Login Component
+ * Handles user authentication with email and password
+ * Includes form validation, error handling, and loading states
+ */
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, ButtonComponent],
-  template: `
-    <div class="min-h-screen flex items-center justify-center px-4 py-12 pb-24 md:pb-12">
-      <div class="w-full max-w-md shadow-lg bg-card rounded-lg border border-border p-6">
-        <div class="text-center mb-6">
-          <div class="mx-auto bg-primary p-3 rounded-xl mb-4 w-fit">
-            <span class="text-primary-foreground text-2xl">🌿</span>
-          </div>
-          <h2 class="text-2xl font-bold">{{ t('login') }}</h2>
-          <p class="text-muted-foreground mt-2">Welcome back to EcoCollect</p>
-        </div>
-        <form [formGroup]="loginForm" (ngSubmit)="handleLogin()" class="space-y-5">
-          <div class="space-y-2">
-            <label for="email" class="text-sm font-medium">Email</label>
-            <input
-              id="email"
-              type="email"
-              formControlName="email"
-              placeholder="you@example.com"
-              class="w-full px-3 py-2 border border-input rounded-md bg-background"
-            />
-          </div>
-          <div class="space-y-2">
-            <label for="password" class="text-sm font-medium">Password</label>
-            <div class="relative">
-              <input
-                id="password"
-                [type]="showPassword ? 'text' : 'password'"
-                formControlName="password"
-                placeholder="••••••••"
-                class="w-full px-3 py-2 border border-input rounded-md bg-background"
-              />
-              <button
-                type="button"
-                (click)="showPassword = !showPassword"
-                class="absolute right-0 top-0 h-full px-3 text-muted-foreground"
-              >
-                {{ showPassword ? '👁️' : '👁️‍🗨️' }}
-              </button>
-            </div>
-          </div>
-          <app-button type="submit" class="w-full">{{ t('login') }}</app-button>
-          <p class="text-center text-sm text-muted-foreground">
-            Don't have an account? <a routerLink="/register" class="text-primary hover:underline">{{ t('register') }}</a>
-          </p>
-        </form>
-      </div>
-    </div>
-  `,
-  styles: []
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent {
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  languageService = inject(LanguageService);
-  userService = inject(UserService);
+export class LoginComponent implements OnInit, OnDestroy {
+  // Services
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly flash = inject(FlashMessageService);
+  private readonly fb = inject(FormBuilder);
+  private readonly cdr = inject(ChangeDetectorRef);
 
-  t = (key: string) => this.languageService.t(key);
+  // Form and state
+  loginForm!: FormGroup;
+  globalError: string | null = null;
   showPassword = false;
+  isSubmitting = false;
 
-  loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
-  });
+  // Cleanup
+  private destroy$ = new Subject<void>();
 
-  handleLogin(): void {
-    if (this.loginForm.valid) {
-      this.userService.login(['citizen']);
-      this.router.navigate(['/citizen-dashboard']);
+  ngOnInit(): void {
+    this.initializeForm();
+    this.setupFormValueChangeListener();
+
+    // Redirect if already logged in
+    if (this.authService.isLogged()) {
+      this.router.navigate(['/citizen/dashboard']);
     }
+  }
+
+  /**
+   * Initialize reactive form with validation
+   */
+  private initializeForm(): void {
+    this.loginForm = this.fb.group({
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          AuthValidators.email
+        ]
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6)
+        ]
+      ],
+      rememberMe: [false]
+    });
+  }
+
+  /**
+   * Setup form value change listener for real-time validation feedback
+   */
+  private setupFormValueChangeListener(): void {
+    this.loginForm.statusChanges
+      .pipe(
+        debounceTime(300),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
+  }
+
+  /**
+   * Get field error message
+   */
+  getErrorMessage(fieldName: string): string {
+    const control = this.loginForm.get(fieldName);
+    if (!control || !control.errors || !control.touched) {
+      return '';
+    }
+
+    return AuthValidators.getErrorMessage(fieldName, control.errors);
+  }
+
+  /**
+   * Check if field has error and is touched
+   */
+  hasError(fieldName: string): boolean {
+    const control = this.loginForm.get(fieldName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  /**
+   * Check if field is valid
+   */
+  isFieldValid(fieldName: string): boolean {
+    const control = this.loginForm.get(fieldName);
+    return !!(control && control.valid && control.touched);
+  }
+
+  /**
+   * Toggle password visibility
+   */
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  /**
+   * Handle form submission
+   */
+  onSubmit(): void {
+    // Mark all fields as touched to show validation errors
+    if (this.loginForm.invalid) {
+      Object.keys(this.loginForm.controls).forEach(key => {
+        this.loginForm.get(key)?.markAsTouched();
+      });
+      this.globalError = 'Please fix the errors in the form';
+      this.cdr.markForCheck();
+      return;
+    }
+
+    this.globalError = null;
+    this.isSubmitting = true;
+    this.cdr.markForCheck();
+
+    const { email, password } = this.loginForm.value;
+
+    this.authService.login({ email, password }).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (token) => {
+        try {
+          this.authService.saveToken(token);
+          this.flash.showSuccess('Welcome back! 🎉');
+
+          // Navigate after a short delay for UX
+          setTimeout(() => {
+            this.router.navigate(['/citizen/dashboard']);
+          }, 500);
+        } catch (error) {
+          this.globalError = 'Failed to save authentication token';
+          this.isSubmitting = false;
+          this.cdr.markForCheck();
+        }
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+
+        if (error?.message) {
+          this.globalError = error.message;
+          this.flash.showError(error.message);
+        } else {
+          this.globalError = 'An unexpected error occurred. Please try again.';
+          this.flash.showError('Login failed. Please try again.');
+        }
+
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  /**
+   * Navigate to registration page
+   */
+  goToRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
+  /**
+   * Navigate to forgot password page
+   */
+  goToForgotPassword(): void {
+    this.router.navigate(['/forgot-password']);
+  }
+
+  /**
+   * Clear global error message
+   */
+  clearError(): void {
+    this.globalError = null;
+    this.cdr.markForCheck();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 

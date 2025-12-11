@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+.collection-item {
+  opacity: 0.95;
+  transition: opacity 0.2s ease;
+}
+
+.collection-item:hover {
+  opacity: 1;
+}

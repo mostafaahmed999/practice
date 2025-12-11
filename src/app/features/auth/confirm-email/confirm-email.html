@@ -1,0 +1,61 @@
+<div class="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
+  <div class="w-full max-w-md text-center">
+    <!-- Loading State -->
+    @if (status === 'loading') {
+      <div class="card-lg space-y-6">
+        <div class="flex justify-center">
+          <div class="relative w-16 h-16">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary to-primary-hover rounded-full animate-spin" 
+                 style="clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%)"></div>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-foreground">Confirming Email</h2>
+          <p class="text-muted-foreground mt-2">Please wait while we verify your email...</p>
+        </div>
+      </div>
+    }
+
+    <!-- Success State -->
+    @if (status === 'success') {
+      <div class="card-lg space-y-6">
+        <div class="flex justify-center">
+          <div class="bg-success/10 p-4 rounded-full">
+            <span class="text-4xl">✅</span>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-foreground">Email Confirmed!</h2>
+          <p class="text-muted-foreground mt-2">Your email has been successfully verified. You can now access your account.</p>
+        </div>
+        <button
+          (click)="goToLogin()"
+          class="btn-primary w-full"
+        >
+          Go to Login
+        </button>
+      </div>
+    }
+
+    <!-- Error State -->
+    @if (status === 'error') {
+      <div class="card-lg space-y-6">
+        <div class="flex justify-center">
+          <div class="bg-destructive/10 p-4 rounded-full">
+            <span class="text-4xl">❌</span>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-foreground">Confirmation Failed</h2>
+          <p class="text-muted-foreground mt-2">We couldn't confirm your email. The link may have expired or is invalid.</p>
+        </div>
+        <button
+          (click)="goToLogin()"
+          class="btn-secondary w-full"
+        >
+          Back to Login
+        </button>
+      </div>
+    }
+  </div>
+</div>

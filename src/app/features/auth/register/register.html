@@ -1,0 +1,254 @@
+<div class="min-h-screen flex items-center justify-center px-4 py-12 pb-24 md:pb-12 bg-background">
+  <div class="w-full max-w-md">
+    <!-- Card Container -->
+    <div class="card-lg shadow-md">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <div class="mx-auto bg-primary/10 p-4 rounded-xl mb-4 w-fit">
+          <span class="text-4xl">✨</span>
+        </div>
+        <h1 class="text-2xl font-bold text-foreground">Create Account</h1>
+        <p class="text-muted-foreground mt-2">Join EcoCollect today</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        <!-- Global Error Message -->
+        @if (globalError) {
+          <div class="p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm flex justify-between items-center">
+            <span>{{ globalError }}</span>
+            <button
+              type="button"
+              (click)="clearError()"
+              class="text-destructive hover:text-destructive/80 transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+        }
+
+        <!-- Full Name Field -->
+        <div class="space-y-2">
+          <label for="fullName" class="text-sm font-medium text-foreground flex justify-between items-center">
+            <span>Full Name</span>
+            @if (isFieldValid('fullName')) {
+              <span class="text-primary text-xs">✓ Valid</span>
+            }
+          </label>
+          <input
+            id="fullName"
+            type="text"
+            formControlName="fullName"
+            placeholder="John Doe"
+            [class.border-destructive]="hasError('fullName')"
+            [class.border-primary]="isFieldValid('fullName')"
+            class="input-base transition-colors"
+          />
+          @if (hasError('fullName')) {
+            <p class="text-xs text-destructive flex items-center gap-1">
+              <span>⚠</span>
+              {{ getErrorMessage('fullName') }}
+            </p>
+          }
+        </div>
+
+        <!-- Email Field -->
+        <div class="space-y-2">
+          <label for="email" class="text-sm font-medium text-foreground flex justify-between items-center">
+            <span>Email Address</span>
+            @if (isFieldValid('email')) {
+              <span class="text-primary text-xs">✓ Valid</span>
+            }
+          </label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com"
+            [class.border-destructive]="hasError('email')"
+            [class.border-primary]="isFieldValid('email')"
+            class="input-base transition-colors"
+          />
+          @if (hasError('email')) {
+            <p class="text-xs text-destructive flex items-center gap-1">
+              <span>⚠</span>
+              {{ getErrorMessage('email') }}
+            </p>
+          }
+        </div>
+
+        <!-- Phone Number Field -->
+        <div class="space-y-2">
+          <label for="phoneNumber" class="text-sm font-medium text-foreground flex justify-between items-center">
+            <span>Phone Number</span>
+            @if (isFieldValid('phoneNumber')) {
+              <span class="text-primary text-xs">✓ Valid</span>
+            }
+          </label>
+          <input
+            id="phoneNumber"
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="+1 (555) 123-4567"
+            [class.border-destructive]="hasError('phoneNumber')"
+            [class.border-primary]="isFieldValid('phoneNumber')"
+            class="input-base transition-colors"
+          />
+          @if (hasError('phoneNumber')) {
+            <p class="text-xs text-destructive flex items-center gap-1">
+              <span>⚠</span>
+              {{ getErrorMessage('phoneNumber') }}
+            </p>
+          }
+        </div>
+
+        <!-- Password Field with Strength Indicator -->
+        <div class="space-y-2">
+          <label for="password" class="text-sm font-medium text-foreground flex justify-between items-center">
+            <span>Password</span>
+            @if (registerForm.get('password')?.value) {
+              <span class="text-xs px-2 py-1 rounded" [class.bg-destructive/20]="passwordStrength <= 1" [class.bg-yellow-500/20]="passwordStrength === 2" [class.bg-blue-500/20]="passwordStrength === 3" [class.bg-primary/20]="passwordStrength >= 4">
+                {{ passwordStrengthLabel }}
+              </span>
+            }
+          </label>
+          <div class="relative">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              [class.border-destructive]="hasError('password')"
+              [class.border-primary]="isFieldValid('password')"
+              class="input-base pr-10 transition-colors"
+            />
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
+            >
+              {{ showPassword ? '👁️' : '🙈' }}
+            </button>
+          </div>
+
+          <!-- Password Strength Indicator -->
+          @if (registerForm.get('password')?.value) {
+            <div class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div
+                class="h-full transition-all duration-300"
+                [class]="getPasswordStrengthColor()"
+                [style.width.%]="passwordStrength * 25"
+              ></div>
+            </div>
+            <p class="text-xs text-muted-foreground">
+              💡 Mix uppercase, lowercase, numbers, and symbols for a stronger password
+            </p>
+          }
+
+          @if (hasError('password')) {
+            <p class="text-xs text-destructive flex items-center gap-1">
+              <span>⚠</span>
+              {{ getErrorMessage('password') }}
+            </p>
+          }
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="space-y-2">
+          <label for="confirmPassword" class="text-sm font-medium text-foreground flex justify-between items-center">
+            <span>Confirm Password</span>
+            @if (doPasswordsMatch() && registerForm.get('confirmPassword')?.touched) {
+              <span class="text-primary text-xs">✓ Match</span>
+            }
+          </label>
+          <div class="relative">
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              placeholder="••••••••"
+              [class.border-destructive]="hasError('confirmPassword')"
+              [class.border-primary]="isFieldValid('confirmPassword') && doPasswordsMatch()"
+              class="input-base pr-10 transition-colors"
+            />
+            <button
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
+            >
+              {{ showConfirmPassword ? '👁️' : '🙈' }}
+            </button>
+          </div>
+          @if (hasError('confirmPassword')) {
+            <p class="text-xs text-destructive flex items-center gap-1">
+              <span>⚠</span>
+              {{ getErrorMessage('confirmPassword') }}
+            </p>
+          }
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="flex items-start">
+          <input
+            id="agreeTerms"
+            type="checkbox"
+            formControlName="agreeTerms"
+            class="h-4 w-4 rounded border-input bg-background cursor-pointer mt-0.5"
+          />
+          <label for="agreeTerms" class="ml-2 text-sm text-muted-foreground cursor-pointer">
+            I agree to the
+            <button type="button" class="text-primary hover:text-primary-hover transition-colors font-medium">
+              Terms of Service
+            </button>
+            and
+            <button type="button" class="text-primary hover:text-primary-hover transition-colors font-medium">
+              Privacy Policy
+            </button>
+          </label>
+        </div>
+        @if (hasError('agreeTerms')) {
+          <p class="text-xs text-destructive flex items-center gap-1">
+            <span>⚠</span>
+            You must agree to the terms to continue
+          </p>
+        }
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="isSubmitting || registerForm.invalid"
+          [class.opacity-50]="isSubmitting || registerForm.invalid"
+          class="btn-primary w-full disabled:cursor-not-allowed transition-opacity"
+        >
+          @if (isSubmitting) {
+            <span class="inline-flex items-center gap-2">
+              <span class="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-r-transparent"></span>
+              Creating account...
+            </span>
+          } @else {
+            Create Account
+          }
+        </button>
+
+        <!-- Login Link -->
+        <p class="text-center text-sm text-muted-foreground">
+          Already have an account?
+          <button
+            type="button"
+            (click)="goToLogin()"
+            class="font-semibold text-primary hover:text-primary-hover transition-colors"
+          >
+            Sign in
+          </button>
+        </p>
+      </form>
+    </div>
+
+    <!-- Footer Note -->
+    <p class="text-center text-xs text-muted-foreground mt-6">
+      🔒 Your data is secure and encrypted
+    </p>
+  </div>
+</div>

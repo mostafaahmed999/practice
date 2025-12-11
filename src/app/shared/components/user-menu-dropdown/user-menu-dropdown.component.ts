@@ -1,7 +1,7 @@
 import { Component, inject, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { UserService } from '../../core/services/user.service';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-user-menu-dropdown',

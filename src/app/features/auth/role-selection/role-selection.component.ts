@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { LanguageService } from '../../core/services/language.service';
-import { UserService } from '../../core/services/user.service';
-import { ButtonComponent } from '../../shared/ui/button/button.component';
+import { LanguageService } from '../../../core/services/language.service';
+import { UserService } from '../../../core/services/user.service';
+import { ButtonComponent } from '../../../shared/ui/button/button.component';
 
 @Component({
   selector: 'app-role-selection',

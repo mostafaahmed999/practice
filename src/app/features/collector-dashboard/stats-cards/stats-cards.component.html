@@ -1,0 +1,5 @@
+<div class="grid md:grid-cols-4 gap-6">
+  @for (stat of stats(); track stat.id) {
+    <app-stat-card [stat]="stat"></app-stat-card>
+  }
+</div>

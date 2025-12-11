@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
-import { CollectionRequest } from '../../core/models/collection-request.model';
+import { CollectionRequest } from '../../../core/models/collection-request.model';
 
 @Component({
   selector: 'app-map-container',

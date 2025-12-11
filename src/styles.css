@@ -2,95 +2,251 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Design System - Color Scheme, Typography, Spacing */
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 210 15% 20%;
+    /* Color Palette */
+    --primary: 160 84% 39%;           /* Emerald Green #10b981 */
+    --primary-foreground: 0 0% 100%; /* White */
+    --primary-light: 160 84% 95%;     /* Very light emerald */
+    --primary-hover: 160 84% 32%;     /* Darker emerald */
 
-    --card: 0 0% 100%;
-    --card-foreground: 210 15% 20%;
+    --background: 0 0% 100%;          /* White - Light mode */
+    --foreground: 0 0% 6%;            /* Near black #0a0a0a */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 15% 20%;
+    --card: 0 0% 100%;                /* White */
+    --card-foreground: 0 0% 6%;       /* Near black */
 
-    --primary: 160 84% 39%;
-    --primary-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;             /* White */
+    --popover-foreground: 0 0% 6%;    /* Near black */
 
-    --primary-light: 160 84% 95%;
-    --primary-hover: 160 84% 35%;
+    --secondary: 0 0% 96%;            /* Light gray #f5f5f5 */
+    --secondary-foreground: 0 0% 6%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 210 15% 20%;
+    --muted: 0 0% 96%;                /* Light gray #f4f4f5 */
+    --muted-foreground: 0 0% 45%;     /* Gray #727272 */
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 210 10% 50%;
-
-    --accent: 160 60% 50%;
+    --accent: 160 60% 50%;            /* Emerald accent */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 60%;         /* Red #ef4444 */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 160 84% 39%;
+    --success: 160 84% 39%;           /* Emerald success */
 
-    --radius: 0.75rem;
+    --border: 0 0% 90%;               /* Subtle gray #e4e4e7 */
+    --input: 0 0% 96%;                /* Input light gray */
+    --ring: 160 84% 39%;              /* Primary for focus rings */
 
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    /* Spacing & Sizing */
+    --radius: 0.5rem;                 /* 8px base radius */
+    --radius-md: 0.75rem;             /* 12px for cards */
+    --radius-lg: 1rem;                /* 16px for large elements */
 
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Shadows */
+    --shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.02);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* Transitions */
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 210 15% 10%;
-    --foreground: 0 0% 98%;
+    --background: 0 0% 6%;            /* Near black #0a0a0a */
+    --foreground: 0 0% 98%;           /* Off white #fafafa */
 
-    --card: 210 15% 12%;
+    --card: 0 0% 12%;                 /* Very dark gray */
     --card-foreground: 0 0% 98%;
 
-    --popover: 210 15% 12%;
+    --popover: 0 0% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 160 84% 45%;
-    --primary-foreground: 0 0% 100%;
-
-    --primary-light: 160 84% 15%;
-    --primary-hover: 160 84% 50%;
-
-    --secondary: 210 15% 18%;
+    --secondary: 0 0% 15%;            /* Dark gray */
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 15% 18%;
-    --muted-foreground: 210 10% 60%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 160 60% 55%;
+    --accent: 160 60% 55%;            /* Lighter emerald for dark */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 210 15% 20%;
-    --input: 210 15% 20%;
+    --border: 0 0% 20%;               /* Dark gray border */
+    --input: 0 0% 15%;
     --ring: 160 84% 45%;
   }
-}
 
-@layer base {
+  /* Typography */
+  body {
+    @apply bg-background text-foreground transition-colors;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold leading-tight;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+  }
+
+  small {
+    @apply text-sm;
+  }
+
+  a {
+    @apply text-primary hover:text-primary-hover transition-colors;
+  }
+
   * {
     @apply border-border;
   }
+}
 
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+/* Component Defaults */
+@layer components {
+  /* Cards */
+  .card {
+    @apply bg-card text-card-foreground rounded-[var(--radius-md)] border border-border shadow-sm transition-shadow hover:shadow-md;
+    padding: 1rem;
   }
+
+  .card-lg {
+    @apply card p-6;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-4 py-2 rounded-[var(--radius)] font-medium transition-all duration-200 hover:bg-primary-hover hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-4 py-2 rounded-[var(--radius)] font-medium transition-all duration-200 hover:bg-muted active:scale-95 disabled:opacity-50;
+  }
+
+  .btn-outline {
+    @apply border border-border text-foreground px-4 py-2 rounded-[var(--radius)] font-medium transition-all duration-200 hover:bg-muted active:scale-95 disabled:opacity-50;
+  }
+
+  .btn-ghost {
+    @apply text-foreground px-4 py-2 rounded-[var(--radius)] font-medium transition-all duration-200 hover:bg-muted active:scale-95 disabled:opacity-50;
+  }
+
+  /* Inputs */
+  .input-base {
+    @apply w-full h-10 px-3 py-2 rounded-[var(--radius)] border border-border bg-input text-foreground placeholder-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent;
+  }
+
+  /* Focus Ring */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 dark:focus:ring-offset-background transition-all;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary;
+  }
+
+  .badge-success {
+    @apply bg-success/10 text-success;
+  }
+
+  .badge-destructive {
+    @apply bg-destructive/10 text-destructive;
+  }
+
+  .badge-muted {
+    @apply bg-muted text-muted-foreground;
+  }
+
+  /* Utility Classes */
+  .container-max {
+    @apply container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl;
+  }
+
+  .section-padding {
+    @apply py-8 md:py-12 lg:py-16;
+  }
+
+  .gradient-primary {
+    @apply from-primary to-primary-hover bg-gradient-to-r;
+  }
+
+  .text-muted {
+    @apply text-muted-foreground;
+  }
+
+  .text-subtle {
+    @apply text-muted-foreground text-sm;
+  }
+
+  /* Animations */
+  .animate-fade-in {
+    @apply animate-in fade-in;
+  }
+
+  .animate-fade-up {
+    @apply animate-in fade-in slide-in-from-bottom-4;
+  }
+
+  .animate-scale-in {
+    @apply animate-in zoom-in-95;
+  }
+
+  /* Responsive Utilities */
+  .hidden-mobile {
+    @apply hidden md:block;
+  }
+
+  .hidden-desktop {
+    @apply block md:hidden;
+  }
+}
+
+/* Dark Mode Transitions */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    @apply transition-colors duration-300;
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection Color */
+::selection {
+  @apply bg-primary text-primary-foreground;
+}
+
+::-moz-selection {
+  @apply bg-primary text-primary-foreground;
 }
 

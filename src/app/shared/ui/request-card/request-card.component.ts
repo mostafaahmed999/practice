@@ -1,12 +1,13 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CollectionRequest } from '../../../models/collection-request.model';
+import { CollectionRequest } from '../../../core/models/collection-request.model';
 import { BadgeComponent } from '../badge/badge.component';
 import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-request-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, BadgeComponent, ButtonComponent],
   template: `
     <div

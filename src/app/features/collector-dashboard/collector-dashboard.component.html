@@ -1,0 +1,27 @@
+<div class="min-h-screen py-8 px-4 md:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto space-y-8">
+    <!-- Header -->
+    <app-collector-header></app-collector-header>
+
+    <!-- Stats Cards -->
+    <app-collector-stats-cards></app-collector-stats-cards>
+
+    <!-- Active Routes Section -->
+    <app-collector-active-route></app-collector-active-route>
+
+    <!-- Map and Requests -->
+    <div class="grid lg:grid-cols-2 gap-6">
+      <!-- Map Section -->
+      <app-collector-map-requests (selectRequest)="selectRequest($event)"></app-collector-map-requests>
+
+      <!-- Available Requests List -->
+      <app-collector-available-requests 
+        (selectRequest)="selectRequest($event)"
+        (acceptRequest)="acceptRequest($event)"
+      ></app-collector-available-requests>
+    </div>
+
+    <!-- Recent Collections -->
+    <app-collector-recent-collections></app-collector-recent-collections>
+  </div>
+</div>

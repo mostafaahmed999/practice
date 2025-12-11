@@ -3,7 +3,6 @@ import { CollectionRequest, RequestStatus } from '../models/collection-request.m
 import { Stat } from '../models/stat.model';
 import { Reward, Badge, PointHistory } from '../models/reward.model';
 import { User } from '../models/user.model';
-import { Notification } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -64,11 +63,18 @@ export class DataService {
   }
 
   updateRequestStatus(requestId: number, status: RequestStatus, collectorId?: number, estimatedArrivalTime?: string, routeOrder?: number): void {
-    const requests = this._collectionRequests().map(r => 
-      r.id === requestId 
-        ? { ...r, status, collectorId: collectorId || r.collectorId, estimatedArrivalTime, routeOrder }
-        : r
-    );
+    const requests = this._collectionRequests().map(r => {
+      if (r.id === requestId) {
+        return {
+          ...r,
+          status,
+          ...(collectorId !== undefined && { collectorId }),
+          ...(estimatedArrivalTime !== undefined && { estimatedArrivalTime }),
+          ...(routeOrder !== undefined && { routeOrder })
+        };
+      }
+      return r;
+    });
     this._collectionRequests.set(requests);
   }
 
@@ -121,8 +127,8 @@ export class DataService {
       action: reason,
       points,
       date: new Date().toISOString().split('T')[0],
-      type: 'earned',
-      relatedId
+      type: 'earned' as const,
+      ...(relatedId !== undefined && { relatedId })
     };
     this._pointHistory.update(h => [historyEntry, ...h]);
   }

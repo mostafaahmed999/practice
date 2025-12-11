@@ -1,0 +1,19 @@
+/* Register Component Specific Styles */
+
+:host {
+  display: block;
+  background: hsl(var(--background));
+}
+
+.input-base {
+  transition: var(--transition-fast);
+}
+
+.input-base:focus {
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+}
+
+/* Dark mode specific adjustments */
+:host-context(.dark) .input-base {
+  background: hsl(var(--input));
+}

@@ -1,0 +1,10 @@
+<div class="flex justify-between items-center">
+  <div>
+    <h1 class="text-4xl font-bold text-foreground">{{ t('citizenDashboard') }}</h1>
+    <p class="text-muted-foreground mt-2">Track your recycling journey and environmental impact</p>
+  </div>
+  <app-button (onClick)="onCreateRequestClick()" size="lg" class="gap-2 shadow-md">
+    <span>➕</span>
+    {{ t('createRequest') }}
+  </app-button>
+</div>

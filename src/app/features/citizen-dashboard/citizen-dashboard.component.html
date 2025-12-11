@@ -1,0 +1,19 @@
+<div class="min-h-screen py-8 px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto space-y-8">
+    <!-- Header -->
+    <app-citizen-header (createRequestClick)="modalOpen.set(true)"></app-citizen-header>
+
+    <!-- Collection Request Modal -->
+    <app-citizen-collection-request
+      [modalOpen]="modalOpen()"
+      (modalOpenChange)="modalOpen.set($event)"
+      (requestCreated)="onRequestCreated($event)"
+    ></app-citizen-collection-request>
+
+    <!-- Stats Cards -->
+    <app-citizen-stats-cards [stats]="stats()"></app-citizen-stats-cards>
+
+    <!-- Recent Requests -->
+    <app-citizen-recent-requests [requests]="recentRequests()"></app-citizen-recent-requests>
+  </div>
+</div>

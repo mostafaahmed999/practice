@@ -1,0 +1,24 @@
+<app-card class="shadow-md">
+  <app-card-header>
+    <app-card-title class="text-xl">📦 Available Requests</app-card-title>
+    <app-card-description>Pick up requests in your area</app-card-description>
+  </app-card-header>
+  <app-card-content>
+    <div class="space-y-4 max-h-[400px] overflow-y-auto">
+      @for (request of pendingRequests(); track request.id) {
+        <app-request-card
+          [request]="request"
+          [showActions]="true"
+          (onCardClick)="onCardClick($event)"
+          (onAccept)="onAccept($event)"
+        ></app-request-card>
+      }
+      @if (pendingRequests().length === 0) {
+        <div class="text-center py-8 text-muted-foreground">
+          <span class="text-4xl block mb-2">📦</span>
+          <p>No available requests</p>
+        </div>
+      }
+    </div>
+  </app-card-content>
+</app-card>

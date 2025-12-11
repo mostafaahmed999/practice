@@ -1,0 +1,18 @@
+<section id="features" class="py-12 md:py-20 px-4 md:px-6 lg:px-8 bg-muted/30">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">Why Choose EcoCollect?</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (feature of features; track $index) {
+      <div class="feature-card p-6 hover:shadow-lg transition-all bg-card rounded-lg border border-border">
+        <div class="bg-primary-light p-3 rounded-xl w-fit mb-4">
+          <span class="text-primary text-xl">{{ getIconEmoji(feature.icon) }}</span>
+        </div>
+        <h3 class="text-lg font-semibold mb-2 text-card-foreground">{{ feature.title }}</h3>
+        <p class="text-muted-foreground text-sm">{{ feature.description }}</p>
+      </div>
+      }
+    </div>
+  </div>
+</section>

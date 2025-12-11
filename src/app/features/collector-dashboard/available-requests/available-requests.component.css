@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.requests-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+}
+
+.requests-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.requests-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.requests-list::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+}

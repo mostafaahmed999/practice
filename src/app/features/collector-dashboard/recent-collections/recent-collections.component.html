@@ -1,0 +1,23 @@
+<app-card class="shadow-md">
+  <app-card-header>
+    <app-card-title class="text-xl">🔄 Recent Collections</app-card-title>
+    <app-card-description>Your recent collection history</app-card-description>
+  </app-card-header>
+  <app-card-content>
+    <div class="space-y-3">
+      @for (request of recentCollections(); track request.id) {
+        <app-request-card
+          [request]="request"
+          [clickable]="false"
+          [showActions]="false"
+        ></app-request-card>
+      }
+      @if (recentCollections().length === 0) {
+        <div class="text-center py-8 text-muted-foreground">
+          <span class="text-4xl block mb-2">📦</span>
+          <p>No recent collections</p>
+        </div>
+      }
+    </div>
+  </app-card-content>
+</app-card>

@@ -1,0 +1,6 @@
+/* Register Success Component Styles */
+
+:host {
+  display: block;
+  background: hsl(var(--background));
+}

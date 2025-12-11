@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+.route-item {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.route-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}

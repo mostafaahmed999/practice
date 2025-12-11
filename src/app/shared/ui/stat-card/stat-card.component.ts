@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent, CardContentComponent } from '../card/card.component';
-import { Stat } from '../../../models/stat.model';
+import { Stat } from '../../../core/models/stat.model';
 
 @Component({
   selector: 'app-stat-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, CardComponent, CardContentComponent],
   template: `
     <app-card [className]="'shadow-md hover:shadow-lg transition-shadow ' + (className || '')">

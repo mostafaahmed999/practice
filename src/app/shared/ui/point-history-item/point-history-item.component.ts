@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PointHistory } from '../../../models/reward.model';
+import { PointHistory } from '../../../core/models/reward.model';
 
 @Component({
   selector: 'app-point-history-item',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <div class="flex items-center justify-between p-4 border border-border rounded-lg">

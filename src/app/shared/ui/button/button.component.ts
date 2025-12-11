@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-button',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <button
@@ -23,13 +24,13 @@ import { CommonModule } from '@angular/common';
       @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
     }
     button.default {
-      @apply bg-primary text-primary-foreground hover:bg-primary-hover;
+      @apply bg-primary text-primary-foreground hover:opacity-90;
     }
     button.outline {
       @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
     }
     button.ghost {
-      @apply hover:bg-accent hover:text-accent-foreground;
+      @apply hover:bg-muted hover:text-foreground;
     }
     button.sm {
       @apply h-9 px-3;

@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../core/services/language.service';
 import { DataService } from '../../core/services/data.service';
@@ -11,6 +11,7 @@ import { PointHistoryItemComponent } from '../../shared/ui/point-history-item/po
 @Component({
   selector: 'app-rewards',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ButtonComponent,
@@ -41,7 +42,7 @@ import { PointHistoryItemComponent } from '../../shared/ui/point-history-item/po
               <div class="flex items-center justify-between">
                 <div>
                   <p class="text-sm text-muted-foreground mb-1">{{ t('totalPoints') }}</p>
-                  <p class="text-4xl font-bold text-primary">{{ currentUser()?.points || 0 }}</p>
+                  <p class="text-4xl font-bold text-primary">{{ currentUser().points }}</p>
                 </div>
                 <span class="text-5xl">🎁</span>
               </div>
@@ -65,7 +66,7 @@ import { PointHistoryItemComponent } from '../../shared/ui/point-history-item/po
               <div class="flex items-center justify-between">
                 <div>
                   <p class="text-sm text-muted-foreground mb-1">Level</p>
-                  <p class="text-4xl font-bold text-primary capitalize">{{ currentUser()?.level || 'Bronze' }}</p>
+                  <p class="text-4xl font-bold text-primary capitalize">{{ currentUser().level }}</p>
                 </div>
                 <span class="text-5xl">⭐</span>
               </div>
@@ -81,10 +82,11 @@ import { PointHistoryItemComponent } from '../../shared/ui/point-history-item/po
           </app-card-header>
           <app-card-content>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <app-badge-display
-                *ngFor="let badge of badges()"
-                [badge]="badge"
-              ></app-badge-display>
+              @for (badge of badges(); track badge.id) {
+                <app-badge-display
+                  [badge]="badge"
+                ></app-badge-display>
+              }
             </div>
           </app-card-content>
         </app-card>
@@ -93,8 +95,8 @@ import { PointHistoryItemComponent } from '../../shared/ui/point-history-item/po
         <div>
           <h2 class="text-2xl font-bold mb-4">{{ t('redeemRewards') }}</h2>
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (reward of rewards(); track reward.id) {
             <app-card
-              *ngFor="let reward of rewards()"
               [class]="'shadow-md hover:shadow-lg transition-all ' + (!reward.available ? 'opacity-60' : '')"
             >
               <app-card-content class="p-6">
@@ -111,15 +113,16 @@ import { PointHistoryItemComponent } from '../../shared/ui/point-history-item/po
                   </app-badge>
                 </div>
                 <app-button
-                  [disabled]="!reward.available || (currentUser()?.points || 0) < reward.points"
-                  [variant]="reward.available && (currentUser()?.points || 0) >= reward.points ? 'default' : 'outline'"
+                  [disabled]="!reward.available || currentUser().points < reward.points"
+                  [variant]="reward.available && currentUser().points >= reward.points ? 'default' : 'outline'"
                   class="w-full mt-4"
                   (onClick)="redeemReward(reward.id)"
                 >
-                  {{ reward.available && (currentUser()?.points || 0) >= reward.points ? 'Redeem Now' : 'Not Available' }}
+                  {{ reward.available && currentUser().points >= reward.points ? 'Redeem Now' : 'Not Available' }}
                 </app-button>
               </app-card-content>
-            </app-card>
+            ></app-card>
+            }
           </div>
         </div>
 
@@ -131,10 +134,11 @@ import { PointHistoryItemComponent } from '../../shared/ui/point-history-item/po
           </app-card-header>
           <app-card-content>
             <div class="space-y-3">
-              <app-point-history-item
-                *ngFor="let history of pointHistory()"
-                [history]="history"
-              ></app-point-history-item>
+              @for (history of pointHistory(); track history.id) {
+                <app-point-history-item
+                  [history]="history"
+                ></app-point-history-item>
+              }
               @if (pointHistory().length === 0) {
                 <div class="text-center py-8 text-muted-foreground">
                   <span class="text-4xl block mb-2">📊</span>

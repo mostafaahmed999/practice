@@ -1,0 +1,131 @@
+@if (open) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" (click)="close()">
+    <div class="bg-card rounded-lg border border-border shadow-lg w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="p-6">
+        <h2 class="text-2xl font-bold mb-4">{{ t('createRequest') }}</h2>
+        
+        <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="space-y-6">
+          <!-- Location Selection with Map -->
+          <div class="space-y-2">
+            <label class="text-sm font-medium">{{ t('pickupLocation') }}</label>
+            
+            <!-- Map for location selection -->
+            <div class="w-full h-[300px] rounded-lg overflow-hidden border border-border">
+              <app-map-container
+                [height]="300"
+                [showMarkers]="false"
+                [center]="selectedLocation() || defaultCenter"
+                [zoom]="13"
+                (mapReady)="onMapReady($event)"
+              ></app-map-container>
+            </div>
+
+            <!-- Selected Location Display -->
+            @if (selectedLocation()) {
+              <div class="p-3 bg-primary/10 rounded-md border border-primary/20">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium">📍 Selected Location</p>
+                    <p class="text-xs text-muted-foreground">
+                      Lat: {{ selectedLocation()?.[0]?.toFixed(6) }}, 
+                      Lng: {{ selectedLocation()?.[1]?.toFixed(6) }}
+                    </p>
+                    @if (selectedAddress()) {
+                      <p class="text-sm mt-1">{{ selectedAddress() }}</p>
+                    }
+                  </div>
+                  <button
+                    type="button"
+                    (click)="clearLocation()"
+                    class="text-sm text-destructive hover:underline"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <div class="p-3 bg-muted/50 rounded-md border border-border">
+                <p class="text-sm text-muted-foreground">
+                  📍 {{ t('clickToSelect') }} - Click on the map to select your location
+                </p>
+              </div>
+            }
+
+            <!-- Address Input -->
+            <div class="space-y-2">
+              <label for="address" class="text-sm font-medium">Address (Optional)</label>
+              <input
+                id="address"
+                type="text"
+                formControlName="address"
+                placeholder="Enter your address"
+                class="w-full px-3 py-2 border border-input rounded-md bg-background"
+              />
+            </div>
+          </div>
+
+          <!-- Materials -->
+          <div class="space-y-2">
+            <label class="text-sm font-medium">{{ t('materialsToCollect') }}</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="flex items-center space-x-2 p-3 border border-input rounded-md cursor-pointer hover:bg-muted/50 transition-colors" [class.bg-primary/10]="selectedMaterials().includes('plastic')">
+                <input type="checkbox" [checked]="selectedMaterials().includes('plastic')" (change)="toggleMaterial('plastic')" class="rounded" />
+                <span>♻ {{ t('plastic') }}</span>
+              </label>
+              <label class="flex items-center space-x-2 p-3 border border-input rounded-md cursor-pointer hover:bg-muted/50 transition-colors" [class.bg-primary/10]="selectedMaterials().includes('paper')">
+                <input type="checkbox" [checked]="selectedMaterials().includes('paper')" (change)="toggleMaterial('paper')" class="rounded" />
+                <span>📄 {{ t('paper') }}</span>
+              </label>
+              <label class="flex items-center space-x-2 p-3 border border-input rounded-md cursor-pointer hover:bg-muted/50 transition-colors" [class.bg-primary/10]="selectedMaterials().includes('glass')">
+                <input type="checkbox" [checked]="selectedMaterials().includes('glass')" (change)="toggleMaterial('glass')" class="rounded" />
+                <span>🍶 {{ t('glass') }}</span>
+              </label>
+              <label class="flex items-center space-x-2 p-3 border border-input rounded-md cursor-pointer hover:bg-muted/50 transition-colors" [class.bg-primary/10]="selectedMaterials().includes('metal')">
+                <input type="checkbox" [checked]="selectedMaterials().includes('metal')" (change)="toggleMaterial('metal')" class="rounded" />
+                <span>🔩 {{ t('metal') }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Quantity -->
+          <div class="space-y-2">
+            <label for="quantity" class="text-sm font-medium">{{ t('estimatedQuantity') }}</label>
+            <input
+              id="quantity"
+              type="number"
+              formControlName="quantity"
+              placeholder="0"
+              min="1"
+              class="w-full px-3 py-2 border border-input rounded-md bg-background"
+            />
+          </div>
+
+          <!-- Preferred Time -->
+          <div class="space-y-2">
+            <label for="preferredTime" class="text-sm font-medium">{{ t('preferredTime') }}</label>
+            <input
+              id="preferredTime"
+              type="datetime-local"
+              formControlName="preferredTime"
+              class="w-full px-3 py-2 border border-input rounded-md bg-background"
+            />
+          </div>
+
+          <!-- Actions -->
+          <div class="flex gap-4 pt-4">
+            <app-button type="button" variant="outline" (onClick)="close()" class="flex-1">
+              {{ t('cancel') }}
+            </app-button>
+            <app-button 
+              type="submit" 
+              class="flex-1"
+              [disabled]="!isFormValid()"
+            >
+              {{ t('submitRequest') }}
+            </app-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

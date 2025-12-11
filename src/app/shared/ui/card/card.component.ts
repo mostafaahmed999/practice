@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <div [class]="'bg-card rounded-lg border border-border shadow-md ' + (className || '')">
@@ -19,6 +20,7 @@ export class CardComponent {
 @Component({
   selector: 'app-card-header',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <div [class]="'p-6 pb-4 ' + (className || '')">
@@ -34,6 +36,7 @@ export class CardHeaderComponent {
 @Component({
   selector: 'app-card-title',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <h3 [class]="'text-lg font-semibold text-card-foreground ' + (className || '')">
@@ -49,6 +52,7 @@ export class CardTitleComponent {
 @Component({
   selector: 'app-card-description',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <p [class]="'text-sm text-muted-foreground ' + (className || '')">
@@ -64,6 +68,7 @@ export class CardDescriptionComponent {
 @Component({
   selector: 'app-card-content',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <div [class]="'p-6 pt-0 ' + (className || '')">
@@ -75,6 +80,8 @@ export class CardDescriptionComponent {
 export class CardContentComponent {
   @Input() className = '';
 }
+
+
 
 
 

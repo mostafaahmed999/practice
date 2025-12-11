@@ -1,0 +1,13 @@
+<app-card class="shadow-md">
+  <app-card-header>
+    <app-card-title class="text-xl">🗺️ Collection Requests Map</app-card-title>
+    <app-card-description>View all collection requests on the map</app-card-description>
+  </app-card-header>
+  <app-card-content class="p-0 overflow-hidden">
+    <app-map-container
+      [requests]="requests"
+      [height]="400"
+      (markerClick)="onRequestSelected($event)"
+    ></app-map-container>
+  </app-card-content>
+</app-card>

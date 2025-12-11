@@ -1,9 +1,10 @@
-import { Component, Input, signal, effect } from '@angular/core';
+import { Component, Input, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tabs',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <div [class]="className || ''">
@@ -41,6 +42,7 @@ export class TabsComponent {
 @Component({
   selector: 'app-tabs-list',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <div [class]="'flex items-center justify-center rounded-md bg-muted p-1 ' + (className || '')">
@@ -56,6 +58,7 @@ export class TabsListComponent {
 @Component({
   selector: 'app-tabs-trigger',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     <button
@@ -83,6 +86,7 @@ export class TabsTriggerComponent {
 @Component({
   selector: 'app-tabs-content',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
     @if (isActive) {
